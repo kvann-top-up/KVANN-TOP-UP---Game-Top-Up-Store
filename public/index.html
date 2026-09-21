@@ -1,110 +1,14 @@
-<!doctype html>
-<html lang="km">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KVANN TOP UP — Gaming Store</title>
-<link rel="stylesheet" href="/style.css">
-</head>
-<body>
-<header class="header">
-  <nav class="nav">
-    <a class="brand" href="/">
-      <img src="/assets/logo.svg" alt="KVANN">
-      <span>KVANN <b>TOP UP</b></span>
-    </a>
-    <div class="navlinks">
-      <a href="/">Home</a>
-      <a href="#games">Games</a>
-      <a href="/orders.html">Orders</a>
-      <a href="/login.html" id="loginLink" class="login-btn">Login</a>
-      <button id="logoutBtn" class="login-btn" style="display:none">Logout</button>
-    </div>
-  </nav>
-</header>
-
-<main class="container">
-  <section class="hero">
-    <div class="hero-copy">
-      <div class="hero-badge">⚡ FAST • SAFE • 24/7</div>
-      <h1>LEVEL UP<br><span>YOUR GAME</span></h1>
-      <p>Top up your favorite games instantly with secure KHQR payment.</p>
-      <div class="hero-actions">
-        <a class="btn hero-btn" href="#games">TOP UP NOW <span>→</span></a>
-        <a class="hero-link" href="/orders.html">Track Order ↗</a>
-      </div>
-      <div class="hero-trust">
-        <span>🛡️ Secure Payment</span>
-        <span>⚡ Instant Delivery</span>
-        <span>💬 24/7 Support</span>
-      </div>
-    </div>
-    <div class="hero-orb orb-one"></div>
-    <div class="hero-orb orb-two"></div>
-    <div class="hero-card">
-      <div class="mini-title">KVANN GAMING</div>
-      <div class="mini-big">TOP UP</div>
-      <div class="mini-line"></div>
-      <div class="mini-row"><span>KHQR</span><b>VERIFIED ✓</b></div>
-    </div>
-  </section>
-
-  <section class="feature-grid">
-    <div class="feature"><span class="feature-icon">⚡</span><div><b>Fast Top-Up</b><small>Quick delivery</small></div></div>
-    <div class="feature"><span class="feature-icon">🛡️</span><div><b>Secure Payment</b><small>KHQR verified</small></div></div>
-    <div class="feature"><span class="feature-icon">💬</span><div><b>24/7 Support</b><small>We're here to help</small></div></div>
-  </section>
-
-  <section id="games" class="games-section">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow">EXPLORE</span>
-        <h2>Popular Games</h2>
-        <p>Choose a game and start your top-up.</p>
-      </div>
-      <div class="search-wrap"><span>⌕</span><input id="search" class="search" placeholder="Search game..."></div>
-    </div>
-    <section id="gamesList" class="games"></section>
-  </section>
-
-  <section class="how-section">
-    <div class="section-head centered">
-      <div><span class="eyebrow">SIMPLE PROCESS</span><h2>How to Top Up</h2></div>
-    </div>
-    <div class="steps">
-      <div class="step"><span>01</span><h3>Select Game</h3><p>Choose the game you want to top up.</p></div>
-      <div class="step"><span>02</span><h3>Enter Player ID</h3><p>Enter your account ID carefully.</p></div>
-      <div class="step"><span>03</span><h3>Pay with KHQR</h3><p>Scan and complete your payment.</p></div>
-      <div class="step"><span>04</span><h3>Receive Top-Up</h3><p>Get your items after verification.</p></div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="footer-inner">
-    <div><b>⚡ KVANN TOP UP</b><p>Fast & secure game top-up store.</p></div>
-    <div class="footer-links"><a href="/orders.html">Orders</a><a href="/login.html">Login</a></div>
-  </div>
-  <small>© 2026 KVANN TOP UP • All rights reserved.</small>
-</footer>
-
-<div id="toast" class="toast"></div>
-<script src="/app.js"></script>
+<!doctype html><html lang="km"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KVANN TOP UP</title><link rel="stylesheet" href="/style.css"></head><body>
+<header><img src="/assets/logo.svg" onerror="this.style.display='none'"><b>KVANN <i>TOP UP</i></b><nav><a class="active" href="/">Home</a><a href="#games">Games</a><a href="#games">Top Up</a><a href="/orders.html">Order Tracking</a><a href="/login.html">Help</a></nav><input id="search" placeholder="Search game..."><a href="/login.html">◉ Login / Register</a></header>
+<main><section class="hero"><div><small>K VANN <em>TOP UP</em></small><h1>GAME TOP-UP<br><span>STORE</span></h1><p>Fast • Safe • Easy • 24/7</p><p>បញ្ចូលហ្គេម ងាយស្រួល និងសុវត្ថិភាព</p><a class="btn" href="#games">Top Up Now →</a></div><div class="art"><strong>🎮</strong><b>⚔️</b><i>👾</i></div><aside><p>⚡ <b>FAST TOP-UP</b><small>កញ្ចប់ 1-3 នាទី</small></p><p>◈ <b>KHQR PAYMENT</b><small>បង់ប្រាក់តាម KHQR</small></p><p>♢ <b>SECURE & SAFE</b><small>ការទូទាត់ 100%</small></p><p>☏ <b>24/7 SUPPORT</b><small>ជួយគ្រប់ពេល</small></p></aside></section>
+<section id="shortcuts" class="shortcuts"></section><section id="games"><div class="title"><h2>Popular Games</h2><a href="#games">View All Games →</a></div><div id="grid" class="grid"></div></section>
+<section class="how"><h2>How to Top Up?</h2><div><span>1<br><small>Select Game</small></span><span>2<br><small>Enter UID</small></span><span>3<br><small>Pay with KHQR</small></span><span>4<br><small>Get Diamonds</small></span></div></section></main>
+<footer>KVANN TOP UP　|　Game Top-Up Store　|　Fast • Safe • Easy • 24/7</footer>
 <script>
-(async()=>{
-  const user=await me();
-  if(user){$('#loginLink').style.display='none';$('#logoutBtn').style.display='block';$('#logoutBtn').onclick=logout}
-  const load=async q=>{
-    const gs=await api('/api/games?q='+encodeURIComponent(q||''));
-    $('#gamesList').innerHTML=gs.map(g=>`
-      <article class="card" onclick="location.href='/game.html?slug=${encodeURIComponent(g.slug)}'">
-        <div class="card-img"><img src="${g.image}" alt="${g.name}"><span class="flag">${g.region||'🌏'}</span></div>
-        <div class="card-body"><div><b>${g.name}</b><small>${g.category||'Game Top-Up'}</small></div><span class="arrow">→</span></div>
-      </article>`).join('');
-  };
-  load('');
-  $('#search').oninput=e=>load(e.target.value);
-})().catch(e=>toast(e.message));
-</script>
-</body>
-</html>
+const games=[['free-fire','Free Fire','🔥'],['pubg-mobile','PUBG Mobile','🎯'],['mobile-legends','Mobile Legends','⚔️'],['roblox','Roblox','◈'],['valorant','Valorant','◇'],['genshin-impact','Genshin Impact','✦'],['steam','Steam','◉'],['others','Others','•••']];
+const grid=document.querySelector('#grid'), shortcuts=document.querySelector('#shortcuts');
+function card(g){return `<article class="card" onclick="location.href='/game.html?slug=${g[0]}'"><div class="pic p${games.indexOf(g)}"><b>${g[2]}</b></div><div class="body"><strong>${g[1]}</strong><small>Game Top-Up</small><em>→</em></div></article>`}
+shortcuts.innerHTML=games.map(g=>`<a href="/game.html?slug=${g[0]}"><b>${g[2]}</b><span>${g[1]}</span></a>`).join('');
+grid.innerHTML=games.slice(0,6).map(card).join('');
+document.querySelector('#search').oninput=e=>{let q=e.target.value.toLowerCase();grid.innerHTML=games.filter(g=>g[1].toLowerCase().includes(q)).map(card).join('')};
+</script></body></html>
