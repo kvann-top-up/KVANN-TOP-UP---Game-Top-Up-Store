@@ -1,0 +1,24 @@
+{
+  "games": [
+    {"slug":"mlbb-kh","name":"Mobile Legends (KH)","category":"Mobile Legends","region":"🇰🇭","image":"/assets/mlbb.svg","active":1},
+    {"slug":"mlbb-ph","name":"Mobile Legends Philippines","category":"Mobile Legends","region":"🇵🇭","image":"/assets/mlbb.svg","active":1},
+    {"slug":"mlbb-us","name":"Mobile Legends (USA)","category":"Mobile Legends","region":"🇺🇸","image":"/assets/mlbb.svg","active":1},
+    {"slug":"freefire-kh","name":"Free Fire (KH)","category":"Free Fire","region":"🇰🇭","image":"/assets/freefire.svg","active":1},
+    {"slug":"freefire-sg","name":"Free Fire (SG/MY)","category":"Free Fire","region":"🇸🇬","image":"/assets/freefire.svg","active":1},
+    {"slug":"freefire-tw","name":"Free Fire Taiwan","category":"Free Fire","region":"🇹🇼","image":"/assets/freefire.svg","active":1},
+    {"slug":"hok","name":"Honor of Kings","category":"Honor of Kings","region":"🌏","image":"/assets/hok.svg","active":1},
+    {"slug":"pubg","name":"PUBG Mobile","category":"PUBG Mobile","region":"🌏","image":"/assets/pubg.svg","active":1},
+    {"slug":"codm","name":"Call of Duty Mobile","category":"COD Mobile","region":"🌏","image":"/assets/codm.svg","active":1}
+  ],
+  "products": [
+    {"gameSlug":"mlbb-kh","name":"86 Diamonds","amount":"86 Diamonds","price":1.00,"currency":"USD","active":1},
+    {"gameSlug":"mlbb-kh","name":"172 Diamonds","amount":"172 Diamonds","price":2.00,"currency":"USD","active":1},
+    {"gameSlug":"mlbb-kh","name":"257 Diamonds","amount":"257 Diamonds","price":3.00,"currency":"USD","active":1},
+    {"gameSlug":"freefire-kh","name":"100 Diamonds","amount":"100 Diamonds","price":1.00,"currency":"USD","active":1},
+    {"gameSlug":"freefire-kh","name":"310 Diamonds","amount":"310 Diamonds","price":3.00,"currency":"USD","active":1},
+    {"gameSlug":"pubg","name":"60 UC","amount":"60 UC","price":1.00,"currency":"USD","active":1},
+    {"gameSlug":"pubg","name":"325 UC","amount":"325 UC","price":5.00,"currency":"USD","active":1},
+    {"gameSlug":"hok","name":"80 Tokens","amount":"80 Tokens","price":1.00,"currency":"USD","active":1},
+    {"gameSlug":"codm","name":"80 CP","amount":"80 CP","price":1.00,"currency":"USD","active":1}
+  ]
+}
