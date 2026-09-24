@@ -1,10 +1,322 @@
-<!doctype html><html lang="km"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Top Up — KVANN TOP UP</title><link rel="stylesheet" href="/style.css"></head><body>
-<header class="header"><nav class="nav"><a class="brand" href="/"><img src="/assets/logo.svg" alt="KVANN TOP UP"><span>KVANN TOP UP</span></a><button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button><div class="navlinks" id="navlinks"><a href="/">Home</a><a href="/#games">Games</a><a href="/#games">Top Up</a><a href="/orders.html">Orders</a><a href="/login.html">Login</a></div></nav></header>
-<main class="container"><a href="/#games" class="back-link">← ត្រឡប់ទៅ Games</a><div id="root" style="margin-top:14px"></div></main><div id="toast" class="toast"></div><script src="/app.js"></script><script>
-const menuBtn=$('#menuBtn'),navlinks=$('#navlinks');menuBtn.onclick=()=>navlinks.classList.toggle('open');
-(async()=>{const slug=new URLSearchParams(location.search).get('slug');const gs=await api('/api/games');const g=gs.find(x=>x.slug===slug);if(!g)return $('#root').innerHTML='<div class="panel empty">រកមិនឃើញ Game ទេ</div>';
-$('#root').innerHTML=`<div class="game-top"><div class="game-visual panel"><img src="/assets/free-fire-topup.png" alt="Free Fire Top Up"></div>{g.region||'🌏'}</span></div><div class="game-title"><div class="eyebrow">⚡ FAST TOP-UP</div><h1>${g.name}</h1><p class="muted">${g.category||'Game Top-Up'} • ${g.region||'🌏'}</p></div></div><div class="panel purchase-panel"><div class="step-label"><span>1</span> ជ្រើស Package</div><p class="muted small">ជ្រើសកញ្ចប់ដែលអ្នកចង់ទិញ</p><div id="packages" class="package-grid"></div><form id="orderForm" style="display:none"><div class="form-divider"></div><div class="step-label"><span>2</span> បញ្ចូល Player ID</div><div class="field"><label>Player ID</label><input name="playerId" required inputmode="numeric" placeholder="123456789"></div><div class="field"><label>Server ID <em>(បើត្រូវការ)</em></label><input name="serverId" inputmode="numeric" placeholder="1234"></div><div class="field"><label>Note <em>(Optional)</em></label><textarea name="customerNote" rows="2" placeholder="សរសេរចំណាំ..." ></textarea></div><button class="btn full topup-btn">បន្តទៅបង់ប្រាក់ →</button></form></div></div><section class="panel how-box"><div class="section-head compact"><div><h2>HOW TO TOP UP</h2><div class="under"></div></div></div><div class="how-grid"><div><b>1</b><span>Select Game</span></div><div><b>2</b><span>Choose Package</span></div><div><b>3</b><span>Enter Player ID</span></div><div><b>4</b><span>Pay & Track</span></div></div></section>`;
-let selected=null;$('#packages').innerHTML=(g.products||[]).map(p=>`<button type="button" class="package-card" data-id="${p.id}"><span><b>${p.name}</b><small>Game Top-Up</small></span><strong>${Number(p.price).toLocaleString()} ${p.currency||'USD'}</strong></button>`).join('')||'<div class="empty">មិនទាន់មាន Package</div>';
-$$('#packages .package-card').forEach(b=>b.onclick=()=>{selected=b.dataset.id;$$('#packages .package-card').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');$('#orderForm').style.display='block';$('#orderForm').scrollIntoView({behavior:'smooth',block:'center'})});
-$('#orderForm').onsubmit=async e=>{e.preventDefault();if(!selected)return;try{const x=Object.fromEntries(new FormData(e.target));x.productId=Number(selected);const u=await me();if(!u)return location.href='/login.html';const o=await api('/api/orders',{method:'POST',body:JSON.stringify(x)});location.href='/order.html?code='+encodeURIComponent(o.order_code)}catch(e){toast(e.message)}}})().catch(e=>toast(e.message));
-</script></body></html>
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Top Up — KVANN TOP UP</title>
+<link rel="stylesheet" href="/style.css">
+<style>
+.game-visual{
+  overflow:hidden;
+  border-radius:22px;
+  margin-bottom:18px;
+  background:#050817;
+}
+.game-visual img{
+  display:block;
+  width:100%;
+  height:auto;
+  max-height:420px;
+  object-fit:cover;
+}
+.game-title h1{
+  margin:6px 0;
+}
+.package-card{
+  cursor:pointer;
+}
+.package-card.selected{
+  outline:2px solid #7c5cff;
+  transform:translateY(-2px);
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+<nav class="nav">
+<a class="brand" href="/">
+<img src="/assets/logo.svg" alt="KVANN TOP UP">
+<span>KVANN TOP UP</span>
+</a>
+
+<button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+
+<div class="navlinks" id="navlinks">
+<a href="/">Home</a>
+<a href="/#games">Games</a>
+<a href="/#games">Top Up</a>
+<a href="/orders.html">Orders</a>
+<a href="/login.html">Login</a>
+</div>
+</nav>
+</header>
+
+<main class="container">
+
+<a href="/#games" class="back-link">
+← ត្រឡប់ទៅ Games
+</a>
+
+<div id="root" style="margin-top:14px"></div>
+
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script src="/app.js"></script>
+
+<script>
+const menuBtn = $('#menuBtn');
+const navlinks = $('#navlinks');
+
+menuBtn.onclick = () => {
+  navlinks.classList.toggle('open');
+};
+
+(async () => {
+
+  const slug = new URLSearchParams(location.search).get('slug');
+
+  const games = await api('/api/games');
+
+  const game = games.find(
+    x => String(x.slug).toLowerCase() === String(slug).toLowerCase()
+  );
+
+  if (!game) {
+    $('#root').innerHTML = `
+      <div class="panel empty">
+        រកមិនឃើញ Game ទេ
+      </div>
+    `;
+    return;
+  }
+
+  const isFreeFire =
+    String(game.slug).toLowerCase().includes('freefire') ||
+    String(game.slug).toLowerCase().includes('free-fire') ||
+    String(game.name).toLowerCase().includes('free fire');
+
+  const image = isFreeFire
+    ? '/assets/free-fire-topup.png'
+    : (game.image || '/assets/logo.svg');
+
+  $('#root').innerHTML = `
+
+    <div class="game-top">
+
+      <div class="game-visual panel">
+        <img
+          src="${image}"
+          alt="${game.name} Top Up"
+        >
+      </div>
+
+      <div class="game-title">
+        <div class="eyebrow">
+          ⚡ FAST TOP-UP
+        </div>
+
+        <h1>${game.name}</h1>
+
+        <p class="muted">
+          ${game.category || 'Game Top-Up'}
+          •
+          ${game.region || '🌏'}
+        </p>
+      </div>
+
+    </div>
+
+    <div class="panel purchase-panel">
+
+      <div class="step-label">
+        <span>1</span>
+        ជ្រើស Package
+      </div>
+
+      <p class="muted small">
+        ជ្រើសកញ្ចប់ដែលអ្នកចង់ទិញ
+      </p>
+
+      <div id="packages" class="package-grid"></div>
+
+      <form id="orderForm" style="display:none">
+
+        <div class="form-divider"></div>
+
+        <div class="step-label">
+          <span>2</span>
+          បញ្ចូល Player ID
+        </div>
+
+        <div class="field">
+          <label>Player ID</label>
+          <input
+            name="playerId"
+            required
+            inputmode="numeric"
+            placeholder="123456789"
+          >
+        </div>
+
+        <div class="field">
+          <label>
+            Server ID <em>(បើត្រូវការ)</em>
+          </label>
+
+          <input
+            name="serverId"
+            inputmode="numeric"
+            placeholder="1234"
+          >
+        </div>
+
+        <div class="field">
+          <label>
+            Note <em>(Optional)</em>
+          </label>
+
+          <textarea
+            name="customerNote"
+            rows="2"
+            placeholder="សរសេរចំណាំ..."
+          ></textarea>
+        </div>
+
+        <button class="btn full topup-btn">
+          បន្តទៅបង់ប្រាក់ →
+        </button>
+
+      </form>
+
+    </div>
+
+    <section class="panel how-box">
+
+      <div class="section-head compact">
+        <div>
+          <h2>HOW TO TOP UP</h2>
+          <div class="under"></div>
+        </div>
+      </div>
+
+      <div class="how-grid">
+
+        <div>
+          <b>1</b>
+          <span>Select Game</span>
+        </div>
+
+        <div>
+          <b>2</b>
+          <span>Choose Package</span>
+        </div>
+
+        <div>
+          <b>3</b>
+          <span>Enter Player ID</span>
+        </div>
+
+        <div>
+          <b>4</b>
+          <span>Pay & Track</span>
+        </div>
+
+      </div>
+
+    </section>
+  `;
+
+  let selected = null;
+
+  $('#packages').innerHTML =
+    (game.products || [])
+      .map(p => `
+        <button
+          type="button"
+          class="package-card"
+          data-id="${p.id}"
+        >
+
+          <span>
+            <b>${p.name}</b>
+            <small>Game Top-Up</small>
+          </span>
+
+          <strong>
+            ${Number(p.price).toLocaleString()}
+            ${p.currency || 'USD'}
+          </strong>
+
+        </button>
+      `)
+      .join('')
+      ||
+      '<div class="empty">មិនទាន់មាន Package</div>';
+
+  $$('#packages .package-card').forEach(button => {
+
+    button.onclick = () => {
+
+      selected = button.dataset.id;
+
+      $$('#packages .package-card')
+        .forEach(x => x.classList.remove('selected'));
+
+      button.classList.add('selected');
+
+      $('#orderForm').style.display = 'block';
+
+      $('#orderForm').scrollIntoView({
+        behavior:'smooth',
+        block:'center'
+      });
+    };
+
+  });
+
+  $('#orderForm').onsubmit = async e => {
+
+    e.preventDefault();
+
+    if (!selected) return;
+
+    try {
+
+      const data =
+        Object.fromEntries(new FormData(e.target));
+
+      data.productId = Number(selected);
+
+      const user = await me();
+
+      if (!user) {
+        location.href = '/login.html';
+        return;
+      }
+
+      const order = await api('/api/orders', {
+        method:'POST',
+        body:JSON.stringify(data)
+      });
+
+      location.href =
+        '/order.html?code=' +
+        encodeURIComponent(order.order_code);
+
+    } catch (error) {
+
+      toast(error.message);
+
+    }
+
+  };
+
+})().catch(error => toast(error.message));
+</script>
+
+</body>
+</html>
