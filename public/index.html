@@ -1,9 +1,81 @@
-<!doctype html><html lang="km"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KVANN TOP UP — Game Top-Up Store</title><link rel="stylesheet" href="/style.css"></head><body>
-<header class="header"><nav class="nav"><a class="brand" href="/"><img src="/assets/logo.svg"><span>KVANN TOP UP</span></a><div class="navlinks"><a href="/">Home</a><a href="#games">Games</a><a href="#games">Top Up</a><a href="/orders.html">Orders</a><a href="/login.html" id="loginLink">Login</a><button id="logoutBtn" style="display:none">Logout</button></div></nav></header>
-<main class="container"><section class="hero hero-reference"
-<a class="hero-reference-link" href="#games" aria-label="Top Up Now"><img src="/assets/kvann-banner-1.png" alt="KVANN TOP UP Game Top-Up Store" class="hero-reference-img"></a></section>
-<section class="security"><div class="pill"><span class="pill-icon">⚡</span><div><b>FAST TOP-UP</b><br><small>រហ័ស និងងាយស្រួល</small></div></div><div class="pill"><span class="pill-icon">◇</span><div><b>KHQR PAYMENT</b><br><small>បង់ប្រាក់តាម KHQR</small></div></div><div class="pill"><span class="pill-icon">🛡</span><div><b>SECURE & SAFE</b><br><small>ការទូទាត់មានសុវត្ថិភាព</small></div></div><div class="pill"><span class="pill-icon">☏</span><div><b>24/7 SUPPORT</b><br><small>ជួយគ្រប់ពេល</small></div></div></section>
-<div class="section-head"><div><h2>POPULAR GAMES</h2><div class="under"></div></div></div><input id="search" class="search" placeholder="🔎 ស្វែងរក Game..."><section id="games" class="games"></section>
-<section class="panel" style="margin-top:20px"><div class="section-head" style="margin-top:0"><div><h2>HOW TO TOP UP</h2><div class="under"></div></div></div><div class="shortcuts"><div class="shortcut"><strong>1</strong>Select Game</div><div class="shortcut"><strong>2</strong>Choose Package</div><div class="shortcut"><strong>3</strong>Enter Player ID</div><div class="shortcut"><strong>4</strong>Pay & Track</div></div></section></main><footer>KVANN TOP UP • Game Top-Up Store • Fast • Safe • Easy • 24/7</footer><div id="toast" class="toast"></div><script src="/app.js"></script><script>
-(async()=>{const user=await me();if(user){$('#loginLink').style.display='none';$('#logoutBtn').style.display='block';$('#logoutBtn').onclick=logout}let all=[];const render=gs=>{$('#games').innerHTML=gs.map(g=>`<article class="card" onclick="location.href='/game.html?slug=${encodeURIComponent(g.slug)}'"><div class="card-img"><img src="${g.image||'/assets/logo.svg'}" alt="${g.name}"><span class="flag">${g.region||'🌏'}</span></div><div class="card-body">${g.name}<div class="muted" style="font-size:11px;margin-top:4px">${g.category||'Game Top-Up'}　→</div></div></article>`).join('')||'<div class="panel">រកមិនឃើញ Game ទេ</div>'};all=await api('/api/games');render(all);$('#search').oninput=e=>{const q=e.target.value.toLowerCase();render(all.filter(g=>(g.name+' '+g.category).toLowerCase().includes(q)))}})().catch(e=>toast(e.message));
-</script></body></html>
+<!doctype html>
+<html lang="km">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KVANN TOP UP — Game Top-Up Store</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="header">
+  <nav class="nav">
+    <a class="brand" href="/"><img src="/assets/logo.svg" alt="KVANN TOP UP"><span>KVANN TOP UP</span></a>
+    <div class="navlinks">
+      <a href="/" class="active">Home</a>
+      <a href="#games">Games</a>
+      <a href="#games">Top Up</a>
+      <a href="/orders.html">Orders</a>
+      <a href="/login.html" id="loginLink">Login</a>
+      <button id="logoutBtn" style="display:none">Logout</button>
+    </div>
+  </nav>
+</header>
+
+<main class="container">
+  <section class="hero-new">
+    <a href="#games" aria-label="Top Up Now">
+      <img src="/assets/kvann-3-games-banner.png" alt="KVANN TOP UP - Free Fire, Mobile Legends, PUBG Mobile">
+    </a>
+  </section>
+
+  <section class="security">
+    <div class="pill"><span>⚡</span><div><b>FAST TOP-UP</b><small>រហ័សទាន់ចិត្ត</small></div></div>
+    <div class="pill"><span>🛡️</span><div><b>SECURE &amp; SAFE</b><small>សុវត្ថិភាព 100%</small></div></div>
+    <div class="pill"><span>🎧</span><div><b>24/7 SUPPORT</b><small>ជួយគ្រប់ពេល</small></div></div>
+    <div class="pill"><span>💎</span><div><b>BEST PRICE</b><small>តម្លៃសមរម្យ</small></div></div>
+  </section>
+
+  <section id="games" class="games-section">
+    <div class="section-head">
+      <h2>POPULAR GAMES</h2>
+      <span>3 GAMES</span>
+    </div>
+    <div id="gamesGrid" class="games-grid"></div>
+  </section>
+</main>
+
+<script>
+const wanted = [
+  {keys:['free fire','freefire'], name:'Free Fire', img:'/assets/free-fire-card.png'},
+  {keys:['mobile legends','mlbb'], name:'Mobile Legends', img:'/assets/mobile-legends-card.png'},
+  {keys:['pubg mobile','pubg'], name:'PUBG Mobile', img:'/assets/pubg-mobile-card.png'}
+];
+
+function pickGame(g){
+  const n=(g.name||'').toLowerCase();
+  return wanted.find(x=>x.keys.some(k=>n.includes(k)));
+}
+
+async function loadGames(){
+  const grid=document.getElementById('gamesGrid');
+  try{
+    const r=await fetch('/api/games');
+    const all=await r.json();
+    const selected=wanted.map(w=>all.find(g=>pickGame(g)?.name===w.name)).map((g,i)=>g||wanted[i]);
+    grid.innerHTML=selected.map((g,i)=>{
+      const w=wanted[i];
+      const slug=g.slug || w.name.toLowerCase().replace(/\s+/g,'-');
+      const img=g.image || w.img;
+      return `<article class="game-card" onclick="location.href='/game.html?slug=${encodeURIComponent(slug)}'">
+        <img src="${img}" alt="${w.name}">
+        <div class="game-info"><b>${w.name}</b><span>TOP UP NOW →</span></div>
+      </article>`;
+    }).join('');
+  }catch(e){
+    grid.innerHTML=wanted.map(w=>`<article class="game-card" onclick="location.href='/game.html?slug=${encodeURIComponent(w.name.toLowerCase().replace(/\s+/g,'-'))}'"><img src="${w.img}" alt="${w.name}"><div class="game-info"><b>${w.name}</b><span>TOP UP NOW →</span></div></article>`).join('');
+  }
+}
+loadGames();
+</script>
+</body>
+</html>
