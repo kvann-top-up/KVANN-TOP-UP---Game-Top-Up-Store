@@ -1,81 +1,314 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="km">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>KVANN TOP UP — Game Top-Up Store</title>
-<link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#020817" />
+  <title>KVANN TOP UP — Game Top-Up Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Koulen&family=Noto+Sans+Khmer:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="header">
-  <nav class="nav">
-    <a class="brand" href="/"><img src="/assets/logo.svg" alt="KVANN TOP UP"><span>KVANN TOP UP</span></a>
-    <div class="navlinks">
-      <a href="/" class="active">Home</a>
-      <a href="#games">Games</a>
-      <a href="#games">Top Up</a>
-      <a href="/orders.html">Orders</a>
-      <a href="/login.html" id="loginLink">Login</a>
-      <button id="logoutBtn" style="display:none">Logout</button>
-    </div>
-  </nav>
-</header>
+  <div class="page-bg"></div>
+  <div class="scanlines"></div>
 
-<main class="container">
-  <section class="hero-new">
-    <a href="#games" aria-label="Top Up Now">
-      <img src="/assets/kvann-3-games-banner.png" alt="KVANN TOP UP - Free Fire, Mobile Legends, PUBG Mobile">
+  <header class="navbar">
+    <a class="brand" href="#home" aria-label="KVANN TOP UP Home">
+      <span class="brand-mark">♛</span>
+      <span>KVANN TOP UP</span>
     </a>
-  </section>
 
-  <section class="security">
-    <div class="pill"><span>⚡</span><div><b>FAST TOP-UP</b><small>រហ័សទាន់ចិត្ត</small></div></div>
-    <div class="pill"><span>🛡️</span><div><b>SECURE &amp; SAFE</b><small>សុវត្ថិភាព 100%</small></div></div>
-    <div class="pill"><span>🎧</span><div><b>24/7 SUPPORT</b><small>ជួយគ្រប់ពេល</small></div></div>
-    <div class="pill"><span>💎</span><div><b>BEST PRICE</b><small>តម្លៃសមរម្យ</small></div></div>
-  </section>
+    <nav class="nav-links" id="navLinks">
+      <a class="active" href="#home">⌂ <span>Home</span></a>
+      <a href="#games">🎮 <span>Games</span></a>
+      <a href="#topup">⚡ <span>Top Up</span></a>
+      <a href="#about">ⓘ <span>About</span></a>
+      <a href="#support">♧ <span>Support</span></a>
+    </nav>
 
-  <section id="games" class="games-section">
-    <div class="section-head">
-      <h2>POPULAR GAMES</h2>
-      <span>3 GAMES</span>
+    <div class="nav-actions">
+      <button class="icon-btn" aria-label="Search" id="searchBtn">⌕</button>
+      <button class="icon-btn user-btn" aria-label="Account">♙</button>
+      <button class="login-btn" id="loginBtn">Login</button>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
     </div>
-    <div id="gamesGrid" class="games-grid"></div>
-  </section>
-</main>
+  </header>
 
-<script>
-const wanted = [
-  {keys:['free fire','freefire'], name:'Free Fire', img:'/assets/free-fire-card.png'},
-  {keys:['mobile legends','mlbb'], name:'Mobile Legends', img:'/assets/mobile-legends-card.png'},
-  {keys:['pubg mobile','pubg'], name:'PUBG Mobile', img:'/assets/pubg-mobile-card.png'}
-];
+  <main id="home">
+    <section class="neon-hero" id="neonHero">
+      <div class="hero-copy"><div class="hero-crown">♛</div>
+        <h1>KVANN <span>TOP UP</span></h1>
+        <p>GAME TOP-UP STORE</p>
+        <div class="kh-tag">លឿន • សុវត្ថិភាព • ងាយស្រួល</div>
+      </div><div class="hero-orb orb-a"></div><div class="hero-orb orb-b"></div>
+    </section>
+    <section class="feature-strip">
+      <div><b>⚡</b><span>FAST TOP-UP<small>រហ័សបំផុត</small></span></div>
+      <div><b>🛡</b><span>SECURE &amp; SAFE<small>សុវត្ថិភាព 100%</small></span></div>
+      <div><b>◉</b><span>24/7 SUPPORT<small>ជំនួយពេញម៉ោង</small></span></div>
+      <div><b>◆</b><span>BEST PRICE<small>តម្លៃសមរម្យ</small></span></div>
+    </section>
+    
+    <section class="hero">
+      <div class="hero-character left-character" aria-hidden="true">
+        <div class="character-silhouette">⚔</div>
+      </div>
+      <div class="hero-character right-character" aria-hidden="true">
+        <div class="character-silhouette">♞</div>
+      </div>
 
-function pickGame(g){
-  const n=(g.name||'').toLowerCase();
-  return wanted.find(x=>x.keys.some(k=>n.includes(k)));
-}
+      <div class="energy energy-1"></div>
+      <div class="energy energy-2"></div>
+      <div class="energy energy-3"></div>
 
-async function loadGames(){
-  const grid=document.getElementById('gamesGrid');
-  try{
-    const r=await fetch('/api/games');
-    const all=await r.json();
-    const selected=wanted.map(w=>all.find(g=>pickGame(g)?.name===w.name)).map((g,i)=>g||wanted[i]);
-    grid.innerHTML=selected.map((g,i)=>{
-      const w=wanted[i];
-      const slug=g.slug || w.name.toLowerCase().replace(/\s+/g,'-');
-      const img=g.image || w.img;
-      return `<article class="game-card" onclick="location.href='/game.html?slug=${encodeURIComponent(slug)}'">
-        <img src="${img}" alt="${w.name}">
-        <div class="game-info"><b>${w.name}</b><span>TOP UP NOW →</span></div>
-      </article>`;
-    }).join('');
-  }catch(e){
-    grid.innerHTML=wanted.map(w=>`<article class="game-card" onclick="location.href='/game.html?slug=${encodeURIComponent(w.name.toLowerCase().replace(/\s+/g,'-'))}'"><img src="${w.img}" alt="${w.name}"><div class="game-info"><b>${w.name}</b><span>TOP UP NOW →</span></div></article>`).join('');
-  }
-}
-loadGames();
-</script>
+      <div class="hero-content">
+        <div class="crown">♛</div>
+        <h1><span>KVANN</span><strong>TOP UP</strong></h1>
+        <p class="hero-subtitle">GAME TOP-UP STORE</p>
+        <p class="hero-khmer">លឿន • សុវត្ថិភាព • តម្លៃសមរម្យ</p>
+      </div>
+    </section>
+
+    <section class="games-section" id="games">
+      <div class="game-grid">
+        <article class="game-card freefire">
+          <div class="game-art">
+            <div class="art-glow"></div>
+            <div class="game-character">☠</div>
+            <div class="game-logo">FREE FIRE</div>
+          </div>
+          <div class="game-info">
+            <h2>FREE FIRE</h2>
+            <button class="topup-btn" data-game="Free Fire"><span>♨</span> TOP UP NOW <b>→</b></button>
+          </div>
+        </article>
+
+        <article class="game-card mlbb">
+          <div class="game-art">
+            <div class="art-glow"></div>
+            <div class="game-character">⚔</div>
+            <div class="game-logo">MOBILE<br>LEGENDS</div>
+          </div>
+          <div class="game-info">
+            <h2>MOBILE LEGENDS</h2>
+            <button class="topup-btn" data-game="Mobile Legends"><span>⚔</span> TOP UP NOW <b>→</b></button>
+          </div>
+        </article>
+
+        <article class="game-card pubg">
+          <div class="game-art">
+            <div class="art-glow"></div>
+            <div class="game-character">♙</div>
+            <div class="game-logo">PUBG<br><small>MOBILE</small></div>
+          </div>
+          <div class="game-info">
+            <h2>PUBG MOBILE</h2>
+            <button class="topup-btn" data-game="PUBG Mobile"><span>♙</span> TOP UP NOW <b>→</b></button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="features" id="about">
+      <div class="feature">
+        <div class="feature-icon">ϟ</div>
+        <div><strong>FAST TOP-UP</strong><span>រហ័សបំផុត</span></div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">✦</div>
+        <div><strong>SECURE & SAFE</strong><span>សុវត្ថិភាព 100%</span></div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">♧</div>
+        <div><strong>24/7 SUPPORT</strong><span>ទំនាក់ទំនងគ្រប់ពេល</span></div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">◇</div>
+        <div><strong>BEST PRICE</strong><span>តម្លៃសមរម្យ</span></div>
+      </div>
+    </section>
+
+
+
+    <section class="product-section game-product" id="freefire-products" data-game="FREE FIRE">
+      <div class="product-heading">
+        <div class="game-section-title">
+          <span class="section-game-icon">♨</span>
+          <div><small>GAME TOP-UP</small><h2>FREE FIRE</h2></div>
+        </div>
+        <span class="item-count">18 ITEMS</span>
+      </div>
+      <div class="player-card">
+        <div class="step"><span>1</span><div><b>បញ្ចូល Player ID</b><small>បញ្ចូល ID របស់អ្នក ដើម្បីបន្តការទិញ</small></div></div>
+        <input class="game-player-id" type="text" inputmode="numeric" placeholder="Player ID" />
+      </div>
+      <div class="step-label"><span>2</span><h3>ជ្រើសរើស ITEM</h3></div>
+      <div class="item-grid"><button class="item-card" data-name="780 💎" data-price="5.29"><strong>780 💎</strong><b>$ 5.29</b><span>💎</span></button>
+<button class="item-card" data-name="1590 💎" data-price="11.49"><strong>1590 💎</strong><b>$ 11.49</b><span>💎</span></button>
+<button class="item-card" data-name="3270 💎" data-price="23.49"><strong>3270 💎</strong><b>$ 23.49</b><span>💎</span></button>
+<button class="item-card" data-name="8400 💎" data-price="55.99"><strong>8400 💎</strong><b>$ 55.99</b><span>💎</span></button>
+<button class="item-card" data-name="Level Up 6" data-price="0.40"><strong>Level Up 6</strong><b>$ 0.40</b><span>🎁</span></button>
+<button class="item-card" data-name="Level Up 10" data-price="0.81"><strong>Level Up 10</strong><b>$ 0.81</b><span>🎁</span></button>
+<button class="item-card" data-name="Level Up 15" data-price="0.81"><strong>Level Up 15</strong><b>$ 0.81</b><span>🎁</span></button>
+<button class="item-card" data-name="Level Up 20" data-price="0.81"><strong>Level Up 20</strong><b>$ 0.81</b><span>🎁</span></button>
+<button class="item-card" data-name="Level Up 25" data-price="0.81"><strong>Level Up 25</strong><b>$ 0.81</b><span>🎁</span></button>
+<button class="item-card" data-name="Level Up 30" data-price="1.11"><strong>Level Up 30</strong><b>$ 1.11</b><span>🎁</span></button>
+<button class="item-card" data-name="Weekly Lite" data-price="0.49"><strong>Weekly Lite</strong><b>$ 0.49</b><span>💎</span></button>
+<button class="item-card" data-name="Weekly" data-price="1.69"><strong>Weekly</strong><b>$ 1.69</b><span>💎</span></button>
+<button class="item-card" data-name="Monthly" data-price="7.79"><strong>Monthly</strong><b>$ 7.79</b><span>💎</span></button>
+<button class="item-card" data-name="20" data-price="0.25"><strong>20</strong><b>$ 0.25</b><span>📦</span></button>
+<button class="item-card" data-name="25" data-price="0.30"><strong>25</strong><b>$ 0.30</b><span>📦</span></button>
+<button class="item-card" data-name="100" data-price="0.99"><strong>100</strong><b>$ 0.99</b><span>📦</span></button>
+<button class="item-card" data-name="205" data-price="1.99"><strong>205</strong><b>$ 1.99</b><span>📦</span></button>
+<button class="item-card" data-name="420" data-price="3.99"><strong>420</strong><b>$ 3.99</b><span>📦</span></button></div>
+      <div class="coupon-card">
+        <h3>Coupon</h3>
+        <div class="coupon-row"><input class="coupon-input" placeholder="បញ្ចូល Coupon" /><button class="apply-coupon">Apply</button></div>
+      </div>
+      <div class="purchase-bar">
+        <div><span>Item: <b class="selected-item">[—]</b></span><span>Total: <strong class="total-price">[$0.00]</strong></span></div>
+        <button class="buy-now" disabled>BUY NOW</button>
+      </div>
+    </section>
+
+    <section class="product-section game-product" id="mlbb-products" data-game="MOBILE LEGENDS">
+      <div class="product-heading">
+        <div class="game-section-title">
+          <span class="section-game-icon">⚔</span>
+          <div><small>GAME TOP-UP</small><h2>MOBILE LEGENDS</h2></div>
+        </div>
+        <span class="item-count">18 ITEMS</span>
+      </div>
+      <div class="player-card">
+        <div class="step"><span>1</span><div><b>បញ្ចូល Player ID</b><small>បញ្ចូល ID របស់អ្នក ដើម្បីបន្តការទិញ</small></div></div>
+        <input class="game-player-id" type="text" inputmode="numeric" placeholder="Player ID" />
+      </div>
+      <div class="step-label"><span>2</span><h3>ជ្រើសរើស ITEM</h3></div>
+      <div class="item-grid"><button class="item-card" data-name="Weekly" data-price="1.65"><strong>Weekly</strong><b>$ 1.65</b><span>🎟️</span></button>
+<button class="item-card" data-name="55" data-price="0.98"><strong>55</strong><b>$ 0.98</b><span>💎</span></button>
+<button class="item-card" data-name="86" data-price="1.49"><strong>86</strong><b>$ 1.49</b><span>💎</span></button>
+<button class="item-card" data-name="165" data-price="2.50"><strong>165</strong><b>$ 2.50</b><span>💎</span></button>
+<button class="item-card" data-name="172" data-price="2.59"><strong>172</strong><b>$ 2.59</b><span>💎</span></button>
+<button class="item-card" data-name="275" data-price="4.09"><strong>275</strong><b>$ 4.09</b><span>💎</span></button>
+<button class="item-card" data-name="344" data-price="5.09"><strong>344</strong><b>$ 5.09</b><span>💎</span></button>
+<button class="item-card" data-name="514" data-price="7.39"><strong>514</strong><b>$ 7.39</b><span>💎</span></button>
+<button class="item-card" data-name="565" data-price="7.99"><strong>565</strong><b>$ 7.99</b><span>💎</span></button>
+<button class="item-card" data-name="600" data-price="8.49"><strong>600</strong><b>$ 8.49</b><span>💎</span></button>
+<button class="item-card" data-name="706" data-price="9.77"><strong>706</strong><b>$ 9.77</b><span>💎</span></button>
+<button class="item-card" data-name="878" data-price="12.29"><strong>878</strong><b>$ 12.29</b><span>💎</span></button>
+<button class="item-card" data-name="1136" data-price="16.29"><strong>1136</strong><b>$ 16.29</b><span>💎</span></button>
+<button class="item-card" data-name="1584" data-price="21.99"><strong>1584</strong><b>$ 21.99</b><span>💎</span></button>
+<button class="item-card" data-name="2195" data-price="29.69"><strong>2195</strong><b>$ 29.69</b><span>💎</span></button>
+<button class="item-card" data-name="3688" data-price="48.59"><strong>3688</strong><b>$ 48.59</b><span>💎</span></button>
+<button class="item-card" data-name="5532" data-price="74.29"><strong>5532</strong><b>$ 74.29</b><span>💎</span></button>
+<button class="item-card" data-name="9288" data-price="124.99"><strong>9288</strong><b>$ 124.99</b><span>💎</span></button></div>
+      <div class="coupon-card">
+        <h3>Coupon</h3>
+        <div class="coupon-row"><input class="coupon-input" placeholder="បញ្ចូល Coupon" /><button class="apply-coupon">Apply</button></div>
+      </div>
+      <div class="purchase-bar">
+        <div><span>Item: <b class="selected-item">[—]</b></span><span>Total: <strong class="total-price">[$0.00]</strong></span></div>
+        <button class="buy-now" disabled>BUY NOW</button>
+      </div>
+    </section>
+
+    <section class="product-section game-product" id="pubg-products" data-game="PUBG MOBILE">
+      <div class="product-heading">
+        <div class="game-section-title">
+          <span class="section-game-icon">♙</span>
+          <div><small>GAME TOP-UP</small><h2>PUBG MOBILE</h2></div>
+        </div>
+        <span class="item-count">10 ITEMS</span>
+      </div>
+      <div class="player-card">
+        <div class="step"><span>1</span><div><b>បញ្ចូល Player ID</b><small>បញ្ចូល ID របស់អ្នក ដើម្បីបន្តការទិញ</small></div></div>
+        <input class="game-player-id" type="text" inputmode="numeric" placeholder="Player ID" />
+      </div>
+      <div class="step-label"><span>2</span><h3>ជ្រើសរើស ITEM</h3></div>
+      <div class="item-grid"><button class="item-card" data-name="Prime 7 ថ្ងៃ" data-price="1.10"><strong>Prime 7 ថ្ងៃ</strong><b>$ 1.10</b><span>🎫</span></button>
+<button class="item-card" data-name="Prime 30 ថ្ងៃ" data-price="5.87"><strong>Prime 30 ថ្ងៃ</strong><b>$ 5.87</b><span>🎫</span></button>
+<button class="item-card" data-name="Prime Plus 7 ថ្ងៃ" data-price="9.49"><strong>Prime Plus 7 ថ្ងៃ</strong><b>$ 9.49</b><span>🏆</span></button>
+<button class="item-card" data-name="Prime Plus 30 ថ្ងៃ" data-price="55.99"><strong>Prime Plus 30 ថ្ងៃ</strong><b>$ 55.99</b><span>🏆</span></button>
+<button class="item-card" data-name="60 UC" data-price="0.99"><strong>60 UC</strong><b>$ 0.99</b><span>💳</span></button>
+<button class="item-card" data-name="325 UC" data-price="4.99"><strong>325 UC</strong><b>$ 4.99</b><span>💳</span></button>
+<button class="item-card" data-name="660 UC" data-price="9.77"><strong>660 UC</strong><b>$ 9.77</b><span>💳</span></button>
+<button class="item-card" data-name="1800 UC" data-price="24.59"><strong>1800 UC</strong><b>$ 24.59</b><span>💳</span></button>
+<button class="item-card" data-name="3850 UC" data-price="48.99"><strong>3850 UC</strong><b>$ 48.99</b><span>💳</span></button>
+<button class="item-card" data-name="8100 UC" data-price="94.99"><strong>8100 UC</strong><b>$ 94.99</b><span>💳</span></button></div>
+      <div class="coupon-card">
+        <h3>Coupon</h3>
+        <div class="coupon-row"><input class="coupon-input" placeholder="បញ្ចូល Coupon" /><button class="apply-coupon">Apply</button></div>
+      </div>
+      <div class="purchase-bar">
+        <div><span>Item: <b class="selected-item">[—]</b></span><span>Total: <strong class="total-price">[$0.00]</strong></span></div>
+        <button class="buy-now" disabled>BUY NOW</button>
+      </div>
+    </section>
+
+    <section class="topup-panel" id="topup">
+      <div class="section-line"><span>/// KVANN TOP UP ///</span></div>
+      <div class="panel-box">
+        <p class="eyebrow">QUICK TOP-UP</p>
+        <h2>ជ្រើសរើសហ្គេមរបស់អ្នក</h2>
+        <p>ជ្រើសរើសហ្គេមខាងលើ ដើម្បីចាប់ផ្តើម Top Up</p>
+        <button class="primary-btn" id="quickTopup">START TOP UP →</button>
+      </div>
+    </section>
+
+    <section class="support-section" id="support">
+      <div class="section-line"><span>/// SUPPORT ///</span></div>
+      <div class="support-grid">
+        <div>
+          <span class="small-label">NEED HELP?</span>
+          <h2>KVANN TOP UP SUPPORT</h2>
+          <p>យើងត្រៀមជួយអ្នក 24/7 សម្រាប់បញ្ហា Top Up និងការទូទាត់។</p>
+        </div>
+        <button class="support-btn" id="supportBtn">CONTACT SUPPORT →</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> KVANN TOP UP</div>
+    <div>FAST • SECURE • RELIABLE</div>
+  </footer>
+
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-box">
+      <button class="close-btn" id="closeModal">×</button>
+      <div class="modal-crown">♛</div>
+      <p class="eyebrow">KVANN TOP UP</p>
+      <h2 id="modalTitle">TOP UP</h2>
+      <p id="modalText">ជ្រើសរើសហ្គេមដើម្បីបន្ត។</p>
+      <div class="form-row">
+        <label>Player ID</label>
+        <input id="playerId" type="text" placeholder="បញ្ចូល Player ID" />
+      </div>
+      <button class="primary-btn" id="continueBtn">CONTINUE →</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
 </body>
 </html>
+
+    <section class="how-section" id="howItWorks">
+      <div class="section-title"><span>///</span> HOW IT WORKS <span>///</span></div>
+      <div class="steps">
+        <div><i>1</i><b>ជ្រើសរើសហ្គេម</b><small>Choose your game</small></div><em>→</em>
+        <div><i>2</i><b>បញ្ចូល ID</b><small>Enter Player ID</small></div><em>→</em>
+        <div><i>3</i><b>ជ្រើសរើស Item</b><small>Select package</small></div><em>→</em>
+        <div><i>4</i><b>បង់ប្រាក់</b><small>Make payment</small></div><em>→</em>
+        <div><i>5</i><b>ទទួលទំនិញ</b><small>Top-up completed</small></div>
+      </div>
+    </section>
+    
+    <footer class="neon-footer">
+      <div class="footer-brand"><span>♛</span><b>KVANN TOP UP</b><small>Your Game • Our Priority</small></div>
+      <div class="footer-social">◉　✈　♪　▶</div>
+      <div class="footer-links">Home　|　Games　|　Top Up　|　About　|　Support<br><small>© 2026 KVANN TOP UP. All rights reserved.</small></div>
+    </footer>
+    
